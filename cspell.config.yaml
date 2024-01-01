@@ -1,0 +1,15 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - Btns
+  - dilshan
+  - DONOTSAVECHANGES
+  - ICYMI
+  - Pexels
+  - Photoshop
+  - Piacquadio
+  - statictext
+ignoreWords: []
+import: []
