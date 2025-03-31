@@ -5,123 +5,174 @@
   Copyright (c) [2024] - MIT License
 */
 
-// flag to control script execution
-var continueScript = true;
 // Save the current preferences
 var startDisplayDialogs = app.displayDialogs;
-// Set Adobe Photoshop to display no dialogs
+var originalRulerUnits = app.preferences.rulerUnits;
+
+// Set Adobe Photoshop to display no dialogs and set ruler units to pixels
 app.displayDialogs = DialogModes.NO;
-// Store the state of the document before changes
+app.preferences.rulerUnits = Units.PIXELS;
+
 var doc = app.activeDocument;
-var initialState = doc.activeHistoryState;
+var continueScript = true;
 
-var dialog = new Window("dialog", "Confirmation - Panel Splitter");
-dialog.alignChildren = "left";
-var fontText = ScriptUI.newFont("Segoe UI", "Regular", 14);
-var fontBtns = ScriptUI.newFont("Segoe UI", "Regular", 14);
-
-// Add a message label
-var messageLine1 = dialog.add(
-  "statictext",
-  undefined,
-  "IMPORTANT: Make sure that;"
-);
-messageLine1.graphics.font = fontText;
-var messageLine2 = dialog.add(
-  "statictext",
-  undefined,
-  "1. You have saved your file."
-);
-messageLine2.graphics.font = fontText;
-var messageLine3 = dialog.add(
-  "statictext",
-  undefined,
-  "2. You have a backup of this document."
-);
-messageLine3.graphics.font = fontText;
-var messageLine4 = dialog.add(
-  "statictext",
-  undefined,
-  "Do you want to proceed?"
-);
-messageLine4.graphics.font = fontText;
-
-// Add a group to contain buttons
-var buttonGroup = dialog.add("group");
-buttonGroup.alignment = "center";
-buttonGroup.alignChildren = "center";
-
-// Add Yes and No buttons
-var yesButton = buttonGroup.add("button", undefined, "Yes");
-yesButton.graphics.font = fontBtns;
-var noButton = buttonGroup.add("button", undefined, "No");
-noButton.graphics.font = fontBtns;
-
-var bottomText = dialog.add(
-  "statictext",
-  undefined,
-  "Panel Splitter • Made with ❤ by dilshan-h • github.com/dilshan-h"
-);
-
-// Functions to handle button click events
-yesButton.onClick = function () {
-  alert("On the next dialog box, select a location to save the panels.");
-  dialog.close();
-};
-
-noButton.onClick = function () {
-  alert("Script will be stopped now. Run again to continue.");
-  dialog.close();
+// Check if the document is saved
+if (!doc.saved) {
+  alert(
+    "Please save your document before running Panel Splitter!\nScript will be stopped now. Run again to continue."
+  );
   continueScript = false;
-};
-
-dialog.show();
+}
 
 if (continueScript) {
-  // ask the user for the output folders
-  var outputFolder = Folder.selectDialog(
-    "Select a folder for the output files"
+  // Confirmation dialog
+  var dialog = new Window("dialog", "Confirmation | Panel Splitter v2.0");
+  dialog.alignChildren = "left";
+  var fontText = ScriptUI.newFont("Segoe UI", "Regular", 14);
+  var fontBtns = ScriptUI.newFont("Segoe UI", "Regular", 14);
+
+  dialog.add(
+    "statictext",
+    undefined,
+    "Welcome to Panel Splitter!"
+  ).graphics.font = fontText;
+  dialog.add(
+    "statictext",
+    undefined,
+    "Easily split your document into multiple panels and save them as high-quality PDFs."
+  ).graphics.font = fontText;
+  dialog.add(
+    "statictext",
+    undefined,
+    "On the next screen, you will be asked to enter the number of rows and columns."
+  ).graphics.font = fontText;
+  dialog.add("statictext", undefined, "Do you want to proceed?").graphics.font =
+    fontText;
+
+  var buttonGroup = dialog.add("group");
+  buttonGroup.alignment = "center";
+  buttonGroup.alignChildren = "center";
+
+  var yesButton = buttonGroup.add("button", undefined, "Yes");
+  yesButton.graphics.font = fontBtns;
+  var noButton = buttonGroup.add("button", undefined, "No");
+  noButton.graphics.font = fontBtns;
+
+  var footerGroup = dialog.add("group");
+  footerGroup.alignment = "center";
+  footerGroup.alignChildren = "center";
+  footerGroup.add(
+    "statictext",
+    undefined,
+    "Panel Splitter • Made with ❤ by dilshan-h • github.com/dilshan-h"
   );
-  if (outputFolder == null) {
-    alert(
-      "An output directory is required!\nScript will be stopped now. Run again to continue."
-    );
+
+  yesButton.onClick = function () {
+    dialog.close();
+  };
+
+  noButton.onClick = function () {
     continueScript = false;
+    dialog.close();
+  };
+
+  dialog.show();
+
+  if (continueScript) {
+    // Select output folder
+    var outputFolder = Folder.selectDialog(
+      "Select a folder for the output files"
+    );
+    if (outputFolder == null) {
+      alert(
+        "An output directory is required!\nScript will be stopped now. Run again to continue."
+      );
+      continueScript = false;
+    }
+  }
+
+  if (continueScript) {
+    // Duplicate the document
+    var tempDoc = doc.duplicate();
+    try {
+      var success = cropAndSavePDFs(tempDoc, outputFolder);
+      if (success) {
+        alert("Files successfully saved!");
+      }
+    } catch (e) {
+      alert(
+        "An error occurred: " +
+          e.message +
+          "\nScript will be stopped now. Please reach out to the developer."
+      );
+    } finally {
+      tempDoc.close(SaveOptions.DONOTSAVECHANGES);
+    }
   }
 }
 
-if (continueScript) {
-  cropAndSavePDFs();
-
-  // Reset the application preferences
-  app.displayDialogs = startDisplayDialogs;
-
-  // Undo changes to revert the document state
-  doc.activeHistoryState = initialState;
-
-  app.activeDocument.close(SaveOptions.DONOTSAVECHANGES);
-  alert("Files successfully saved!");
-}
+// Reset the application preferences
+app.displayDialogs = startDisplayDialogs;
+app.preferences.rulerUnits = originalRulerUnits;
 
 // Function to prompt user for rows and columns
 function promptRowsColumns() {
-  var rows = parseInt(prompt("Enter the number of rows:", ""));
-  var columns = parseInt(prompt("Enter the number of columns:", ""));
-  return [rows, columns];
+  var dialog = new Window(
+    "dialog",
+    "Enter Rows and Columns count | Panel Splitter"
+  );
+  dialog.alignChildren = "center";
+  dialog.preferredSize.width = 200;
+  dialog.add("statictext", undefined, "Rows:");
+  var rowsInput = dialog.add("edittext", undefined, "2");
+  rowsInput.characters = 5;
+  dialog.add("statictext", undefined, "Columns:");
+  var colsInput = dialog.add("edittext", undefined, "2");
+  colsInput.characters = 5;
+
+  var buttonGroup = dialog.add("group");
+  buttonGroup.alignment = "center";
+  buttonGroup.alignChildren = "center";
+
+  var okButton = buttonGroup.add("button", undefined, "OK");
+  okButton.graphics.font = fontBtns;
+  var cancelButton = buttonGroup.add("button", undefined, "Cancel");
+  cancelButton.graphics.font = fontBtns;
+
+  dialog.add(
+    "statictext",
+    undefined,
+    "Panel Splitter • Made with ❤ by dilshan-h • github.com/dilshan-h"
+  );
+
+  okButton.onClick = function () {
+    dialog.close(1);
+  };
+  cancelButton.onClick = function () {
+    dialog.close(0);
+  };
+  if (dialog.show() == 1) {
+    var rows = parseInt(rowsInput.text);
+    var columns = parseInt(colsInput.text);
+    if (isNaN(rows) || isNaN(columns)) {
+      alert("Please enter valid numbers.");
+      return null;
+    }
+    return [rows, columns];
+  } else {
+    return null;
+  }
 }
 
 // Function to clear existing guides
-function clearGuides() {
-  var doc = app.activeDocument;
+function clearGuides(doc) {
   doc.guides.removeAll();
 }
 
 // Function to add outer guides
-function setOuterGuides() {
-  var doc = app.activeDocument;
+function setOuterGuides(doc) {
   var width = doc.width.value;
   var height = doc.height.value;
-
   doc.guides.add(Direction.HORIZONTAL, 0);
   doc.guides.add(Direction.HORIZONTAL, height);
   doc.guides.add(Direction.VERTICAL, 0);
@@ -129,29 +180,23 @@ function setOuterGuides() {
 }
 
 // Function to add new guides based on rows and columns
-function addGuides(rows, columns) {
-  var doc = app.activeDocument;
+function addGuides(doc, rows, columns) {
   var width = doc.width.value;
   var height = doc.height.value;
-
   var horizontalSpacing = width / columns;
   var verticalSpacing = height / rows;
-
   for (var i = 1; i < rows; i++) {
     doc.guides.add(Direction.HORIZONTAL, verticalSpacing * i);
   }
-
   for (var j = 1; j < columns; j++) {
     doc.guides.add(Direction.VERTICAL, horizontalSpacing * j);
   }
 }
 
 // Function to save selection as PDF
-function saveAsPDF(selectionBounds, outputPath) {
-  var doc = app.activeDocument;
+function saveAsPDF(tempDoc, selectionBounds, outputPath, outputFolder) {
   var bounds = selectionBounds;
-
-  doc.crop(bounds);
+  tempDoc.crop(bounds);
   var saveOptions = new PDFSaveOptions();
   saveOptions.compatibility = PDFCompatibility.PDF14;
   saveOptions.embedThumbnail = true;
@@ -160,28 +205,34 @@ function saveAsPDF(selectionBounds, outputPath) {
   saveOptions.layers = false;
   saveOptions.preserveEditing = false;
   saveOptions.view = false;
-  doc.saveAs(new File(outputFolder + outputPath), saveOptions);
+  tempDoc.saveAs(new File(outputFolder + outputPath), saveOptions);
 }
 
 // Main function
-function cropAndSavePDFs() {
+function cropAndSavePDFs(tempDoc, outputFolder) {
   var rowsColumns = promptRowsColumns();
-  if (!rowsColumns || rowsColumns.length !== 2) return;
+  if (!rowsColumns || rowsColumns.length !== 2) return false;
 
   var rows = rowsColumns[0];
   var columns = rowsColumns[1];
 
-  var doc = app.activeDocument;
+  clearGuides(tempDoc);
+  setOuterGuides(tempDoc);
+  addGuides(tempDoc, rows, columns);
 
-  clearGuides();
-  setOuterGuides();
-  addGuides(rows, columns);
+  // Unlock the background layer if it exists and is locked
+  if (
+    tempDoc.layers.length > 0 &&
+    tempDoc.layers[tempDoc.layers.length - 1].isBackgroundLayer
+  ) {
+    tempDoc.layers[tempDoc.layers.length - 1].isBackgroundLayer = false;
+  }
 
-  // Merge visible layers
-  doc.flatten();
+  // Flatten the document
+  tempDoc.flatten();
+  var flattenedState = tempDoc.activeHistoryState;
 
-  var guides = doc.guides;
-
+  var guides = tempDoc.guides;
   var pdfCounter = 1;
 
   var horizontalGuides = [];
@@ -209,16 +260,21 @@ function cropAndSavePDFs() {
     for (var j = 0; j < columns; j++) {
       var top = horizontalGuides[i].coordinate;
       var bottom = horizontalGuides[i + 1].coordinate;
-
       var left = verticalGuides[j].coordinate;
       var right = verticalGuides[j + 1].coordinate;
 
       var selectionBounds = [left, top, right, bottom];
       var outputPath = "/Panel_" + pdfCounter + ".pdf";
 
-      saveAsPDF(selectionBounds, outputPath);
-      doc.activeHistoryState = doc.historyStates[doc.historyStates.length - 2];
+      try {
+        saveAsPDF(tempDoc, selectionBounds, outputPath, outputFolder);
+      } catch (e) {
+        alert("Error saving PDF: " + e.message);
+        return false;
+      }
+      tempDoc.activeHistoryState = flattenedState;
       pdfCounter++;
     }
   }
+  return true;
 }
