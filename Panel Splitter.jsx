@@ -5,6 +5,9 @@
   Copyright (c) [2024] - MIT License
 */
 
+// Script version
+var scriptVersion = "2.0";
+
 // Save the current preferences
 var startDisplayDialogs = app.displayDialogs;
 var originalRulerUnits = app.preferences.rulerUnits;
@@ -26,7 +29,10 @@ if (!doc.saved) {
 
 if (continueScript) {
   // Confirmation dialog
-  var dialog = new Window("dialog", "Confirmation | Panel Splitter v2.0");
+  var dialog = new Window(
+    "dialog",
+    "Confirmation | Panel Splitter v" + scriptVersion
+  );
   dialog.alignChildren = "left";
   var fontText = ScriptUI.newFont("Segoe UI", "Regular", 14);
   var fontBtns = ScriptUI.newFont("Segoe UI", "Regular", 14);
@@ -119,10 +125,10 @@ app.preferences.rulerUnits = originalRulerUnits;
 function promptRowsColumns() {
   var dialog = new Window(
     "dialog",
-    "Enter Rows and Columns count | Panel Splitter"
+    "Enter Rows and Columns count | Panel Splitter v" + scriptVersion
   );
   dialog.alignChildren = "center";
-  dialog.preferredSize.width = 200;
+  dialog.preferredSize.width = 300;
   dialog.add("statictext", undefined, "Rows:");
   var rowsInput = dialog.add("edittext", undefined, "2");
   rowsInput.characters = 5;
@@ -152,10 +158,16 @@ function promptRowsColumns() {
     dialog.close(0);
   };
   if (dialog.show() == 1) {
-    var rows = parseInt(rowsInput.text);
-    var columns = parseInt(colsInput.text);
-    if (isNaN(rows) || isNaN(columns)) {
-      alert("Please enter valid numbers.");
+    var rowsText = rowsInput.text;
+    var colsText = colsInput.text;
+    if (!rowsText.match(/^\d+$/) || !colsText.match(/^\d+$/)) {
+      alert("Please enter positive integers for rows and columns!");
+      return null;
+    }
+    var rows = parseInt(rowsText);
+    var columns = parseInt(colsText);
+    if (rows < 1 || columns < 1) {
+      alert("Rows and columns must be at least 1!");
       return null;
     }
     return [rows, columns];
@@ -216,6 +228,21 @@ function cropAndSavePDFs(tempDoc, outputFolder) {
   var rows = rowsColumns[0];
   var columns = rowsColumns[1];
 
+  var totalPanels = rows * columns;
+  var progressWindow = new Window(
+    "palette",
+    "Processing | Panel Splitter v" + scriptVersion
+  );
+  progressWindow.add("statictext", undefined, "Hang tight...");
+  progressWindow.alignChildren = "center";
+  progressWindow.preferredSize.width = 300;
+  var progressText = progressWindow.add(
+    "statictext",
+    undefined,
+    "Processing panel 1 of " + totalPanels
+  );
+  progressWindow.show();
+
   clearGuides(tempDoc);
   setOuterGuides(tempDoc);
   addGuides(tempDoc, rows, columns);
@@ -270,11 +297,16 @@ function cropAndSavePDFs(tempDoc, outputFolder) {
         saveAsPDF(tempDoc, selectionBounds, outputPath, outputFolder);
       } catch (e) {
         alert("Error saving PDF: " + e.message);
+        progressWindow.close();
         return false;
       }
       tempDoc.activeHistoryState = flattenedState;
       pdfCounter++;
+      progressText.text =
+        "Processing panel " + pdfCounter + " of " + totalPanels;
+      progressWindow.update();
     }
   }
+  progressWindow.close();
   return true;
 }
