@@ -22,5 +22,29 @@ namespace Panel_Splitter.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoUpdates {
+            get {
+                return ((bool)(this["AutoUpdates"]));
+            }
+            set {
+                this["AutoUpdates"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AnalyticsEnabled {
+            get {
+                return ((bool)(this["AnalyticsEnabled"]));
+            }
+            set {
+                this["AnalyticsEnabled"] = value;
+            }
+        }
     }
 }
