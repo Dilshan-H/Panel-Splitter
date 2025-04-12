@@ -7,6 +7,7 @@
 
 // Script version
 var scriptVersion = "2.0";
+var test_user = "true";
 
 // Save the current preferences
 var startDisplayDialogs = app.displayDialogs;
@@ -18,6 +19,19 @@ app.preferences.rulerUnits = Units.PIXELS;
 
 var doc = app.activeDocument;
 var continueScript = true;
+
+// Log Script Startup
+var timestamp = new Date();
+var app_ps_version = app.version;
+var logEntry =
+  timestamp +
+  " | [Script-Startup] | " +
+  app_ps_version +
+  " | " +
+  scriptVersion +
+  " | " +
+  test_user;
+writeLog(logEntry);
 
 // Check if the document is saved
 if (!doc.saved) {
@@ -70,7 +84,7 @@ if (continueScript) {
   footerGroup.add(
     "statictext",
     undefined,
-    "Panel Splitter • Made with ❤ by dilshan-h • github.com/dilshan-h"
+    "Panel Splitter | Made with <3 by dilshan-h | github.com/dilshan-h"
   );
 
   yesButton.onClick = function () {
@@ -94,6 +108,20 @@ if (continueScript) {
         "An output directory is required!\nScript will be stopped now. Run again to continue."
       );
       continueScript = false;
+    } else {
+      // Log Script Usage Start
+      var canvas_size = doc.width.value + "x" + doc.height.value;
+      var usageStartLogEntry =
+        timestamp +
+        " | [Script-Usage-Start] | " +
+        app_ps_version +
+        " | " +
+        scriptVersion +
+        " | " +
+        test_user +
+        " | " +
+        canvas_size;
+      writeLog(usageStartLogEntry);
     }
   }
 
@@ -101,14 +129,44 @@ if (continueScript) {
     // Duplicate the document
     var tempDoc = doc.duplicate();
     try {
-      var success = cropAndSavePDFs(tempDoc, outputFolder);
-      if (success) {
+      var result = cropAndSavePDFs(tempDoc, outputFolder);
+
+      if (result.success) {
+        var usageEndLogEntry =
+          timestamp +
+          " | [Script-Usage-End] | " +
+          app_ps_version +
+          " | " +
+          scriptVersion +
+          " | " +
+          test_user +
+          " | " +
+          result.rows +
+          " | " +
+          result.columns +
+          " | " +
+          result.totalPanels +
+          " | " +
+          result.time_taken;
+        writeLog(usageEndLogEntry);
         alert("Files successfully saved!");
       }
     } catch (e) {
+      var errorMsg = e.message;
+      var errorLogEntry =
+        timestamp +
+        " | [Script-Error] | " +
+        app_ps_version +
+        " | " +
+        scriptVersion +
+        " | " +
+        test_user +
+        " | " +
+        errorMsg;
+      writeLog(errorLogEntry);
       alert(
         "An error occurred: " +
-          e.message +
+          errorMsg +
           "\nScript will be stopped now. Please reach out to the developer."
       );
     } finally {
@@ -120,6 +178,16 @@ if (continueScript) {
 // Reset the application preferences
 app.displayDialogs = startDisplayDialogs;
 app.preferences.rulerUnits = originalRulerUnits;
+
+// Function to write log
+function writeLog(logEntry) {
+  var logFile = new File(
+    Folder.appData + "/Panel Splitter Logs/PanelSplitterDataLog.txt"
+  );
+  logFile.open("a");
+  logFile.writeln(logEntry);
+  logFile.close();
+}
 
 // Function to prompt user for rows and columns
 function promptRowsColumns() {
@@ -148,7 +216,7 @@ function promptRowsColumns() {
   dialog.add(
     "statictext",
     undefined,
-    "Panel Splitter • Made with ❤ by dilshan-h • github.com/dilshan-h"
+    "Panel Splitter | Made with <3 by dilshan-h | github.com/dilshan-h"
   );
 
   okButton.onClick = function () {
@@ -223,7 +291,8 @@ function saveAsPDF(tempDoc, selectionBounds, outputPath, outputFolder) {
 // Main function
 function cropAndSavePDFs(tempDoc, outputFolder) {
   var rowsColumns = promptRowsColumns();
-  if (!rowsColumns || rowsColumns.length !== 2) return false;
+  var startTime = new Date().getTime();
+  if (!rowsColumns || rowsColumns.length !== 2) return { success: false };
 
   var rows = rowsColumns[0];
   var columns = rowsColumns[1];
@@ -298,7 +367,7 @@ function cropAndSavePDFs(tempDoc, outputFolder) {
       } catch (e) {
         alert("Error saving PDF: " + e.message);
         progressWindow.close();
-        return false;
+        return { success: false };
       }
       tempDoc.activeHistoryState = flattenedState;
       pdfCounter++;
@@ -308,5 +377,13 @@ function cropAndSavePDFs(tempDoc, outputFolder) {
     }
   }
   progressWindow.close();
-  return true;
+  var endTime = new Date().getTime();
+  var time_taken = (endTime - startTime) / 1000; // Time in seconds
+  return {
+    success: true,
+    rows: rows,
+    columns: columns,
+    totalPanels: totalPanels,
+    time_taken: time_taken,
+  };
 }
