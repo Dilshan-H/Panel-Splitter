@@ -8,61 +8,84 @@
 <!-- ![GitHub stars](https://img.shields.io/github/stars/Dilshan-H/Panel-Splitter?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Dilshan-H/Panel-Splitter?style=for-the-badge) -->
 
-![Panel Splitter for Photoshop - Cover](https://github.com/Dilshan-H/Panel-Splitter/assets/77499497/ad1e722b-be01-4689-86bd-1d0e997b8015)
+![Panel Splitter for Photoshop - Cover](https://github.com/user-attachments/assets/67d6ccf8-491c-4e40-b10a-5070292ed3ad)
 
-## What is Panel Splitter?
+## Transform Your Photoshop Workflow with Panel Splitter
+Say goodbye to manual image splitting in Photoshop! Panel Splitter is the ultimate script designed to automate cropping your images or canvas along guides and exporting them as high-quality PDFs. Just tell it how many rows and columns you need, and watch it work its magic—preparing guides, cropping panels, and saving them as high quality PDFs in seconds. Ready to streamline your Photoshop workflow? Let’s dive in!
 
-Panel Splitter is a script that helps you to instantly crop images/canvas along the guides in Photoshop and export them as high quality PDFs. All you need to provide is how many rows and columns that are needed. Panel Splitter will prepare the guides, crop each panel and save them as PDFs for you!
+## 🚀 What’s New in This Update?
 
-## Simple Demo
+- Enhanced Performance: Faster processing and improved stability for a seamless experience.
+- Bug fixes and feature enhancements, including a revamped UI!
+- Background Update Checks: Automatically ensures you’re always using the latest version — no manual re-installations required!
+- Usage Analytics (Optional): Share anonymous data to help us improve Panel Splitter based on how you use it.
+- And more...
+
+## ⏩ Simple Demo
 
 Here's a example of what this tool can do:
 
 ![Demo](https://github.com/Dilshan-H/Panel-Splitter/assets/77499497/8ccfeb01-8aef-4052-ad3a-6994a36b5142)
 
+## 🤔 Why use Panel Splitter?
 
-## Why use Panel Splitter?
+Panel Splitter is a game-changing Photoshop script for designers, artists, and anyone who needs to split images into multiple panels effortlessly. Whether you’re preparing presentation panels or layouts, multi-page designs, or tiled artwork, this tool automates the process and delivers professional-grade PDF exports every time.
 
-There is an alternative option that already available in Adobe Photoshop named `Slices from Guides`. But, it lacks the ability to export each panel in high quality state. (the `Export` feature is deprecated in modern versions as well). This tools helps in this situation by filling those gaps.
+There is an alternative option that already available in Adobe Photoshop named `Slices from Guides`. But, it lacks the ability to export each panel in high quality state. (the `Export` feature is deprecated in modern versions as well). This tools helps in this situation by filling those gaps + We have more features in mind 😋
 
-## How to use this tool?
+## ✨ Key Features
 
-### Automatic Installation (Windows Only)
+- Automatic Guide Creation: Skip the manual setup—Panel Splitter generates guides for you.
+- High-Quality PDF Exports: Crisp, professional outputs ready for print or digital use.
+- Customizable Splitting: Define your rows and columns with ease.
+- Background Updates: Stay current with automatic version checks.
+- Analytics Insights: Opt-in to help us refine the tool while keeping your data private.
+
+## How to use Panel Splitter?
+
+### 🖥️ Automatic Installation (Windows Only)
 
 1. Download the latest release from [here](https://github.com/Dilshan-H/Panel-Splitter/releases).
-2. Double click on the downloaded file `Panel.Splitter.for.Adobe.Photoshop.exe` to install the script. Make sure that you have Adobe Photoshop installed in your computer before running the installer. Otherwise, the installer will extract the script files to your desktop. From there, you can manually install the script to Photoshop [See next section].
+2. Double click on the downloaded file `Panel.Splitter.for.Adobe.Photoshop.exe` to install the software.
+3. Start `Panel Splitter` and click `Install`, Panel Splitter will automatically identify installed Photoshop versions and configure as necessary. (But if this fails somehow, you can follow the 'Manual Installtion' method mentioned below.)
+4. If your Photoshop application is already opened, close and restart it. (First time only - to load the script to PS)
+
+### 🛠️ Manual Installation
+
+1. Start `Panel Splitter` and click on `Extract`.
+2. On the folder browsing dialog, locate the `Scripts` folder in Adobe Photoshop installation location. Generally it locates 
+   - Windows: `C:\Program Files\Adobe\Adobe Photoshop <version>\Presets\Scripts\`
+   - Mac: `/Applications/Adobe Photoshop <version>/Presets/Scripts/`
 3. If your Photoshop application is already opened, close and restart it. (First time only - to load the script to PS)
 
-### Manual Installation
+### ⚙ Install on Mac
 
-1. Download the latest release from [here](https://github.com/Dilshan-H/Panel-Splitter/releases).
+1. Download the source code from latest release [here](https://github.com/Dilshan-H/Panel-Splitter/releases).
 2. Extract the downloaded zip file.
 3. Copy the `Panel Splitter.jsx` file to the following location:
-   - Windows: `C:\Program Files\Adobe\Adobe Photoshop <version>\Presets\Scripts\`
    - Mac: `/Applications/Adobe Photoshop <version>/Presets/Scripts/`
 4. If your Photoshop application is already opened, close and restart it. (First time only - to load the script to PS)
 
-### Usage
-1. Open the image/canvas/panel
-2. Please make sure to **save your document** and **keep a backup copy** for safety.
-3. Go to `File > Scripts > Panel Splitter`
+### 🎨 Usage Steps
+
+1. Open the image/canvas/panel in Adobe Photoshop.
+2. Please make sure to **save your document**.
+3. Navigate to `File > Scripts > Panel Splitter`
 4. Provide a location to export the processed panels.
-5. Input amount of rows and columns respectively in the next dialogs.
-6. That's it.. After a moment, the script will show a message saying that the process is complete. Check the output location for PDF files.
+5. Input amount of rows and columns in the next dialog.
+6. Relax — Panel Splitter will process everything and notify you when it’s done. Check your folder for the results!
 
-## [ICYMI]: Important Notes for Users
+## 🤝 Contributing to Panel Splitter
 
-- Always save your document before running this script!
-- Make sure to keep a backup copy just in case, if something goes wrong.
+Love what Panel Splitter can do? Help us make it even better! Whether you’ve found a bug, have a feature idea, or want to tweak the code, we’re excited to collaborate.
+Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/new) or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
-## Contributing
-
-Got an idea? Found a bug? Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/new) or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
-
+**Development Setup**
 1. Clone/Fork this repository.
 2. Setup your development environment as discussed in here: https://extendscript.docsforadobe.dev/index.html
-3. There are additional resources available within `References` folder - you can check them out as well.
-4. Make your changes to the script and test it with `Adobe ExtendScript extension` for Visual Studio Code.
+3. Set up Visual Studio as needed for updates on WPF application.
+4. There are additional resources available within `References` folder - you can check them out as well.
+5. Make your changes to the script and test it with `Adobe ExtendScript extension` for Visual Studio Code.
 
 ## License & Copyrights
 
