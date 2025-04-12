@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.35919.96 d17.13
+VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panel Splitter", "Panel Splitter\Panel Splitter.csproj", "{167C4FD5-D821-42C9-A48A-9921777312F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Panel Splitter Helper", "Panel Splitter Helper\Panel Splitter Helper.csproj", "{A8B02FF6-56BE-44B1-ADDD-77A9071F006B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{167C4FD5-D821-42C9-A48A-9921777312F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167C4FD5-D821-42C9-A48A-9921777312F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167C4FD5-D821-42C9-A48A-9921777312F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8B02FF6-56BE-44B1-ADDD-77A9071F006B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8B02FF6-56BE-44B1-ADDD-77A9071F006B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8B02FF6-56BE-44B1-ADDD-77A9071F006B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8B02FF6-56BE-44B1-ADDD-77A9071F006B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
