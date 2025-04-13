@@ -25,7 +25,7 @@ namespace Panel_Splitter.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AutoUpdates {
             get {
                 return ((bool)(this["AutoUpdates"]));
@@ -37,13 +37,25 @@ namespace Panel_Splitter.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool AnalyticsEnabled {
             get {
                 return ((bool)(this["AnalyticsEnabled"]));
             }
             set {
                 this["AnalyticsEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string UserDistinctId {
+            get {
+                return ((string)(this["UserDistinctId"]));
+            }
+            set {
+                this["UserDistinctId"] = value;
             }
         }
     }

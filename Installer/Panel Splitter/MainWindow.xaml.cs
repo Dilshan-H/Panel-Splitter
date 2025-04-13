@@ -1,21 +1,9 @@
-﻿using System.IO;
-using System.Text;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using System.Diagnostics;
 
 namespace Panel_Splitter
 {
@@ -24,9 +12,6 @@ namespace Panel_Splitter
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Application version
-        private const string currentVersion = "2.0";
-
         public MainWindow()
         {
             InitializeComponent();
@@ -34,6 +19,13 @@ namespace Panel_Splitter
             // Load saved settings for checkboxes
             UpdatesCheckBox.IsChecked = Properties.Settings.Default.AutoUpdates;
             AnalyticsCheckBox.IsChecked = Properties.Settings.Default.AnalyticsEnabled;
+
+            // Send logs as a fallback if analytics is enabled
+            Task.Run(async () =>
+            {
+                await AnalyticsHelper.SendLogsAsync();
+                await AnalyticsHelper.CaptureEvent("App-Startup");
+            });
 
             // Check for updates on startup if automatic updates are enabled
             if (Properties.Settings.Default.AutoUpdates)
@@ -51,7 +43,7 @@ namespace Panel_Splitter
         private void InstallBtn_Click(object sender, RoutedEventArgs e)
         {
             List<string> paths = DetectPhotoshopVersions();
-            List<string> installedVersions = [];
+            List<string> installedVersions = new();
 
             foreach (string path in paths)
             {
@@ -63,6 +55,12 @@ namespace Panel_Splitter
                 }
                 catch (Exception ex)
                 {
+                    _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                    {
+                        { "app_error_type", "Script-Installation-Error" },
+                        { "app_error_msg", ex.Message },
+                        { "app_ps_paths", paths }
+                    });
                     System.Windows.MessageBox.Show($"Failed to install to {path}: {ex.Message}", "Installation Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -71,6 +69,11 @@ namespace Panel_Splitter
             InstalledVersionsTextBlock.Text = installedVersions.Count != 0
                 ? "🗹 Installed in: " + string.Join(", ", installedVersions)
                 : "No Photoshop versions found.";
+
+            _ = AnalyticsHelper.CaptureEvent("Script-Installation", new Dictionary<string, object>
+                {
+                    { "app_ps_versions", string.Join(", ", installedVersions) }
+                });
         }
 
         /// <summary>
@@ -84,14 +87,32 @@ namespace Panel_Splitter
             {
                 string sourceFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Panel Splitter");
                 string targetFolder = System.IO.Path.Combine(dialog.SelectedPath, "Panel Splitter");
+
+                if (!Directory.Exists(sourceFolder))
+                {
+                    throw new DirectoryNotFoundException("Panel Splitter folder not found in the application directory.\nPlease reinstall the application!");
+                }
+
+                ProcessStartInfo psi = new()
+                {
+                    FileName = "Panel Splitter Helper.exe",
+                    Arguments = $"/install \"{targetFolder}\" \"{sourceFolder}\"",
+                    Verb = IsAdminRequired(targetFolder) ? "runas" : null, // Requests admin privileges if required
+                    UseShellExecute = true
+                };
                 try
                 {
-                    DirectoryCopy(sourceFolder, targetFolder);
+                    Process.Start(psi).WaitForExit();
                     System.Windows.MessageBox.Show("Folder extracted successfully.", "Success | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
                 {
                     System.Windows.MessageBox.Show($"Failed to extract folder: {ex.Message}", "Extraction Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                    {
+                        { "app_error_type", "Script-Extract-Error" },
+                        { "app_error_msg", ex.Message }
+                    });
                 }
             }
         }
@@ -105,102 +126,103 @@ namespace Panel_Splitter
             UpdateBtn.Content = "🔄 Checking";
             UpdateBtn.IsEnabled = false;
 
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "PanelSplitterApp");
-            try
-            {
-                string json = await client.GetStringAsync("https://api.github.com/repos/dilshan-h/Panel-Splitter/releases/latest");
-                JObject release = JObject.Parse(json);
-                string latestVersion = release["tag_name"].ToString().TrimStart('v');
+            var (updateAvailable, latestVersion, setupUrl, error) = await UpdateHelper.CheckForUpdatesAsync();
 
-                if (new Version(latestVersion) > new Version(currentVersion))
-                {
-                    UpdateBtn.Content = "✨ Update Available!";
-                    MessageBoxResult result = System.Windows.MessageBox.Show($"Update available: v{latestVersion}. Download and install?", "Update Available | Panel Splitter", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        // Find the setup executable in the release assets
-                        #pragma warning disable CS8602 // Dereference of a possibly null reference.
-                        #pragma warning disable CS8604 // Possible null reference argument.
-                        string setupUrl = release["assets"]
-                            .First(a => a["name"].ToString().EndsWith(".exe"))["browser_download_url"]
-                            .ToString();
-                        #pragma warning restore CS8604 // Possible null reference argument.
-                        #pragma warning restore CS8602 // Dereference of a possibly null reference.
-                        string tempSetupPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PanelSplitterSetup.exe");
-
-                        UpdateBtn.Content = "⬇ Downloading...";
-                        DownloadProgressBar.Visibility = Visibility.Visible;
-                        #pragma warning disable SYSLIB0014 // Type or member is obsolete
-                        using (var wc = new System.Net.WebClient())
-                        {
-                            wc.DownloadProgressChanged += (s, args) =>
-                            {
-                                DownloadProgressBar.Value = args.ProgressPercentage;
-                            };
-                            wc.DownloadFileCompleted += (s, args) =>
-                            {
-                                DownloadProgressBar.Visibility = Visibility.Collapsed;
-                            };
-                            await wc.DownloadFileTaskAsync(setupUrl, tempSetupPath);
-                        }
-                        #pragma warning restore SYSLIB0014 // Type or member is obsolete
-
-                        UpdateBtn.Content = "✔ Downloaded";
-
-                        System.Windows.MessageBox.Show("Download complete. The installer will now start, and this application will close.","Ready to Install | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                        // Run the setup and close the application
-                        Process.Start(tempSetupPath);
-                        System.Windows.Application.Current.Shutdown();
-                    }
-                    else
-                    {
-                        UpdateBtn.Content = "✨ Update Available!";
-                        UpdateBtn.IsEnabled = true;
-                    }
-                }
-                else
-                {
-                    UpdateBtn.Content = "✔ Up to Date";
-                    UpdateBtn.IsEnabled = false;
-                    UpdateBtn.Foreground = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#FF53A85F"));
-                }
-            }
-            catch (Exception ex)
+            if (error != null)
             {
                 DownloadProgressBar.Visibility = Visibility.Collapsed;
                 UpdateBtn.Content = "Check for updates";
                 UpdateBtn.IsEnabled = true;
-                System.Windows.MessageBox.Show($"Failed to check for updates: {ex.Message}", "Update Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                {
+                    { "app_error_type", "App-Update-Failure" },
+                    { "app_error_msg", error.Message }
+                });
+                System.Windows.MessageBox.Show($"Failed to check for updates: {error.Message}", "Update Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (updateAvailable)
+            {
+                UpdateBtn.Content = "✨ Update Available!";
+                MessageBoxResult result = System.Windows.MessageBox.Show($"Update available: v{latestVersion}. Download and install?", "Update Available | Panel Splitter", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    string tempSetupPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "PanelSplitterSetup.exe");
+                    UpdateBtn.Content = "⬇ Downloading...";
+                    DownloadProgressBar.Visibility = Visibility.Visible;
+
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
+                    using (var wc = new System.Net.WebClient())
+                    {
+                        wc.DownloadProgressChanged += (s, args) => DownloadProgressBar.Value = args.ProgressPercentage;
+                        wc.DownloadFileCompleted += (s, args) => DownloadProgressBar.Visibility = Visibility.Collapsed;
+                        await wc.DownloadFileTaskAsync(setupUrl, tempSetupPath);
+                    }
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
+
+                    UpdateBtn.Content = "✔ Downloaded";
+                    _ = AnalyticsHelper.CaptureEvent("App-Update-Download");
+
+                    System.Windows.MessageBox.Show("Download complete. The installer will now start, and this application will close.", "Ready to Install | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Information);
+                    Process.Start(tempSetupPath);
+                    System.Windows.Application.Current.Shutdown();
+                }
+                else
+                {
+                    _ = AnalyticsHelper.CaptureEvent("App-Update-Refused");
+                    UpdateBtn.Content = "✨ Update Available!";
+                    UpdateBtn.IsEnabled = true;
+                }
+            }
+            else
+            {
+                UpdateBtn.Content = "✔ Up to Date";
+                UpdateBtn.IsEnabled = false;
+                UpdateBtn.Foreground = new SolidColorBrush((System.Windows.Media.Color)System.Windows.Media.ColorConverter.ConvertFromString("#265E0F"));
             }
         }
 
         /// <summary>
-        /// Handles changes to the Automatic Updates checkbox.
+        /// Handles checking the Automatic Updates checkbox.
         /// Saves the preference to settings.
         /// </summary>
         private void UpdatesCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.AutoUpdates = UpdatesCheckBox.IsChecked == true;
+            Properties.Settings.Default.AutoUpdates = true;
             Properties.Settings.Default.Save();
         }
 
         /// <summary>
-        /// Handles changes to the Analytics checkbox.
+        /// Handles checking the Analytics checkbox.
         /// Saves the preference to settings and toggles analytics.
         /// </summary>
         private void AnalyticsCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.AnalyticsEnabled = AnalyticsCheckBox.IsChecked == true;
+            Properties.Settings.Default.AnalyticsEnabled = true;
             Properties.Settings.Default.Save();
+        }
 
-            // TODO
-            // Analytics initialization
-            // if (Properties.Settings.Default.AnalyticsEnabled)
-            // {
-            //     posthog stuff goes here
-            // }
+        /// <summary>
+        /// Handles unchecking the Automatic Updates checkbox.
+        /// Saves the preference to settings.
+        /// </summary>
+        private void UpdatesCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.AutoUpdates = false;
+            Properties.Settings.Default.Save();
+            _ = AnalyticsHelper.CaptureEvent("Opt-Out-Updates");
+        }
+
+        /// <summary>
+        /// Handles unchecking the Analytics checkbox.
+        /// Saves the preference to settings and toggles analytics.
+        /// </summary>
+        private void AnalyticsCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            _ = AnalyticsHelper.CaptureEvent("Opt-Out-Analytics");
+            Properties.Settings.Default.AnalyticsEnabled = false;
+            Properties.Settings.Default.Save();
         }
 
         /// <summary>
@@ -219,6 +241,11 @@ namespace Panel_Splitter
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"Failed to open GitHub: {ex.Message}", "Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                {
+                    { "app_error_type", "App-Process-Start-Failure" },
+                    { "app_error_msg", ex.Message }
+                });
             }
         }
 
@@ -227,33 +254,33 @@ namespace Panel_Splitter
         #region Helper Functions
 
         /// <summary>
-        /// Detects installed Photoshop versions by checking the Windows Registry.
+        /// Detects installed Photoshop versions by checking the Windows Registry and file system.
         /// </summary>
         /// <returns>A list of paths to Photoshop installations.</returns>
         private List<string> DetectPhotoshopVersions()
         {
-            List<string> paths = [];
+            List<string> paths = new();
             string baseKey = @"SOFTWARE\Adobe\Photoshop";
 
             // Scan Registry Keys
             InstalledVersionsTextBlock.Text = "Hang on a minute! Scanning Registry...";
+#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             using (RegistryKey key = Registry.LocalMachine.OpenSubKey(baseKey))
             {
                 if (key != null)
                 {
                     foreach (string subKeyName in key.GetSubKeyNames())
                     {
-                        using (RegistryKey subKey = key.OpenSubKey(subKeyName))
+                        using RegistryKey subKey = key.OpenSubKey(subKeyName);
+                        string path = subKey?.GetValue("ApplicationPath") as string;
+                        if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
                         {
-                            string path = subKey?.GetValue("ApplicationPath") as string;
-                            if (!string.IsNullOrEmpty(path) && Directory.Exists(path))
-                            {
-                                paths.Add(path);
-                            }
+                            paths.Add(path);
                         }
                     }
                 }
             }
+#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
 
             // Fall back to file system scan
             if (paths.Count == 0)
@@ -278,7 +305,7 @@ namespace Panel_Splitter
         }
 
         /// <summary>
-        /// Installs the Panel Splitter.jsx script into the specified Photoshop path.
+        /// Installs the script to the specified Photoshop installation path.
         /// </summary>
         /// <param name="photoshopPath">The path to the Photoshop installation.</param>
         private static void InstallScript(string photoshopPath)
@@ -288,10 +315,30 @@ namespace Panel_Splitter
 
             if (!Directory.Exists(sourceFolder))
             {
-                throw new DirectoryNotFoundException("Panel Splitter folder not found in the application directory.");
+                throw new DirectoryNotFoundException("Panel Splitter folder not found in the application directory.\nPlease reinstall the application!");
             }
 
-            DirectoryCopy(sourceFolder, targetDir);
+            ProcessStartInfo psi = new()
+            {
+                FileName = "Panel Splitter Helper.exe",
+                Arguments = $"/install \"{targetDir}\" \"{sourceFolder}\"",
+                Verb = IsAdminRequired(targetDir) ? "runas" : null, // Requests admin privileges if required
+                UseShellExecute = true
+            };
+            try
+            {
+                Process.Start(psi).WaitForExit();
+                System.Windows.MessageBox.Show("Installation completed!", "Success | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show("Installation failed: " + ex.Message, "Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                {
+                    { "app_error_type", "Script-Installation-Failure" },
+                    { "app_error_msg", ex.Message }
+                });
+            }
         }
 
         /// <summary>
@@ -305,9 +352,12 @@ namespace Panel_Splitter
             return folderName.Replace("Adobe Photoshop ", "").Trim();
         }
 
+        /// <summary>
+        /// Updates the installed versions display in the UI.
+        /// </summary>
         private void UpdateInstalledVersionsDisplay()
         {
-            List<string> installedVersions = [];
+            List<string> installedVersions = new();
             List<string> paths = DetectPhotoshopVersions();
 
             foreach (string path in paths)
@@ -325,26 +375,21 @@ namespace Panel_Splitter
                 : "No installations found.";
         }
 
-        private static void DirectoryCopy(string sourceDir, string destDir)
+        /// <summary>
+        /// Check whether the file copy operation requires admin privileges.
+        /// </summary>
+        /// <param name="targetFolder">The target folder where the script will be installed.</param>
+        /// <returns>True if admin privileges are required; otherwise, false.</returns>
+        private static bool IsAdminRequired(string targetFolder)
         {
-            DirectoryInfo dir = new(sourceDir);
-            if (!dir.Exists) throw new DirectoryNotFoundException("Source directory does not exist: " + sourceDir);
-
-            Directory.CreateDirectory(destDir);
-
-            foreach (FileInfo file in dir.GetFiles())
-            {
-                string tempPath = System.IO.Path.Combine(destDir, file.Name);
-                file.CopyTo(tempPath, true);
-            }
-
-            foreach (DirectoryInfo subdir in dir.GetDirectories())
-            {
-                string tempPath = System.IO.Path.Combine(destDir, subdir.Name);
-                DirectoryCopy(subdir.FullName, tempPath);
-            }
+            string[] protectedPaths = new string[] { @"C:\Program Files", @"C:\Program Files (x86)", @"C:\Windows" };
+            return protectedPaths.Any(path => targetFolder.StartsWith(path, StringComparison.OrdinalIgnoreCase));
         }
 
+        public void ShowUpdatePrompt()
+        {
+            UpdateBtn_Click(null, null);
+        }
         #endregion
     }
 }
