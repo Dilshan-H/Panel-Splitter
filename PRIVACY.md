@@ -19,6 +19,7 @@ To improve Panel Splitter, we collect anonymized usage data by default via PostH
   - Operating system version and architecture (e.g., Windows 11, x64).
   - Application version and locale (e.g., en-US).
   - Time zone and country code (based on system settings).
+  - Hardware details: total RAM, free and total disk space on the system drive, and graphics card model
 
 - **Unique Identifier**:
   - A randomly generated ID to track usage patterns anonymously, not linked to your identity.
@@ -36,6 +37,7 @@ We use analytics to:
 - Understand usage patterns to improve features and performance.
 - Detect and fix bugs through anonymized error reports.
 - Ensure compatibility across different systems and optimize update checks.
+- Analyze hardware capabilities to enhance script efficiency and Photoshop integration.
 
 This data helps us keep Panel Splitter free, reliable, and user-focused.
 
