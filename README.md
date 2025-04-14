@@ -46,6 +46,8 @@ There is an alternative option that already available in Adobe Photoshop named `
 
 ### 🖥️ Automatic Installation (Windows Only)
 
+[![Download Panel Splitter for Adobe Photoshop](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/panel-splitter/files/latest/download)
+
 1. Download the latest release from [here](https://github.com/Dilshan-H/Panel-Splitter/releases).
 2. Double click on the downloaded file `Panel.Splitter.for.Adobe.Photoshop.exe` to install the software.
 3. Start `Panel Splitter` and click `Install`, Panel Splitter will automatically identify installed Photoshop versions and configure as necessary. (But if this fails somehow, you can follow the 'Manual Installtion' method mentioned below.)
