@@ -16,7 +16,7 @@
     <PackageProjectUrl>https://sourceforge.net/projects/panel-splitter/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Dilshan-H/Panel-Splitter</RepositoryUrl>
     <NeutralLanguage>en</NeutralLanguage>
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>2.1.0</AssemblyVersion>
     <UserSecretsId>3a9f8e18-3d29-4e51-8042-168cf74013a7</UserSecretsId>
   </PropertyGroup>
 
@@ -27,6 +27,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.Uwp.Notifications" Version="7.1.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Management" Version="9.0.4" />
   </ItemGroup>
 
   <ItemGroup>

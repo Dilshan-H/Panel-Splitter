@@ -1,7 +1,9 @@
 ﻿using System.Globalization;
 using System.IO;
+using System.Management;
 using System.Net.Http;
 using System.Text;
+using Microsoft.VisualBasic.Devices;
 using Newtonsoft.Json;
 
 namespace Panel_Splitter
@@ -202,17 +204,7 @@ namespace Panel_Splitter
                 distinctId = Guid.NewGuid().ToString();
                 Properties.Settings.Default.UserDistinctId = distinctId;
                 Properties.Settings.Default.Save();
-                await CaptureEvent("App-Installation", new Dictionary<string, object>
-                {
-                    { "app_os", Environment.OSVersion.ToString() },
-                    { "app_locale", System.Globalization.CultureInfo.CurrentCulture.Name },
-                    { "app_architecture", Environment.Is64BitOperatingSystem ? "x64" : "x86" },
-                    { "app_language", System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName },
-                    { "app_time_zone", TimeZoneInfo.Local.StandardName },
-                    { "app_country", System.Globalization.RegionInfo.CurrentRegion.TwoLetterISORegionName },
-                    { "app_device_os_build", Environment.OSVersion.Version.Build.ToString() },
-                    { "test_user", IsTestUser }
-                });
+                await CaptureEvent("App-Installation");
             }
 
             var payload = new
@@ -263,7 +255,11 @@ namespace Panel_Splitter
                 { "app_language", CultureInfo.CurrentCulture.TwoLetterISOLanguageName },
                 { "app_time_zone", TimeZoneInfo.Local.StandardName },
                 { "app_country", RegionInfo.CurrentRegion.TwoLetterISORegionName },
-                { "test_user", IsTestUser }
+                { "test_user", IsTestUser },
+                { "system_ram_gb", GetTotalRamInGB() },
+                { "system_disk_free_gb", GetDiskFreeSpaceInGB() },
+                { "system_disk_total_gb", GetDiskTotalSpaceInGB() },
+                { "system_gpu", GetGpuName() }
             };
 
             // Merge custom properties into base properties, overriding if keys overlap
@@ -273,6 +269,64 @@ namespace Panel_Splitter
             }
 
             return baseProperties;
+        }
+
+        private static double GetTotalRamInGB()
+        {
+            try
+            {
+                var computerInfo = new ComputerInfo();
+                return Math.Round(computerInfo.TotalPhysicalMemory / 1073741824.0, 2); // Bytes to GB
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        private static double GetDiskFreeSpaceInGB()
+        {
+            try
+            {
+                var drive = new DriveInfo(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)));
+                return Math.Round(drive.AvailableFreeSpace / 1073741824.0, 2); // Bytes to GB
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        private static double GetDiskTotalSpaceInGB()
+        {
+            try
+            {
+                var drive = new DriveInfo(Path.GetPathRoot(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)));
+                return Math.Round(drive.TotalSize / 1073741824.0, 2); // Bytes to GB
+            }
+            catch
+            {
+                return -1;
+            }
+        }
+
+        private static string GetGpuName()
+        {
+            try
+            {
+                using (var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController"))
+                {
+                    foreach (var obj in searcher.Get())
+                    {
+                        return obj["Name"]?.ToString() ?? "Unknown";
+                    }
+                }
+            }
+            catch
+            {
+                // No logging here to avoid recursive analytics calls
+            }
+            return "Unknown";
         }
     }
 }
