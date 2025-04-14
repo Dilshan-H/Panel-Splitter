@@ -11,6 +11,7 @@
 ![Panel Splitter for Photoshop - Cover](https://github.com/user-attachments/assets/67d6ccf8-491c-4e40-b10a-5070292ed3ad)
 
 ## Transform Your Photoshop Workflow with Panel Splitter
+
 Say goodbye to manual image splitting in Photoshop! Panel Splitter is the ultimate script designed to automate cropping your images or canvas along guides and exporting them as high-quality PDFs. Just tell it how many rows and columns you need, and watch it work its magic—preparing guides, cropping panels, and saving them as high quality PDFs in seconds. Ready to streamline your Photoshop workflow? Let’s dive in!
 
 ## 🚀 What’s New in This Update?
@@ -53,7 +54,7 @@ There is an alternative option that already available in Adobe Photoshop named `
 ### 🛠️ Manual Installation
 
 1. Start `Panel Splitter` and click on `Extract`.
-2. On the folder browsing dialog, locate the `Scripts` folder in Adobe Photoshop installation location. Generally it locates 
+2. On the folder browsing dialog, locate the `Scripts` folder in Adobe Photoshop installation location. Generally it locates in;
    - Windows: `C:\Program Files\Adobe\Adobe Photoshop <version>\Presets\Scripts\`
    - Mac: `/Applications/Adobe Photoshop <version>/Presets/Scripts/`
 3. If your Photoshop application is already opened, close and restart it. (First time only - to load the script to PS)
@@ -81,6 +82,7 @@ Love what Panel Splitter can do? Help us make it even better! Whether you’ve f
 Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/new) or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
 **Development Setup**
+
 1. Clone/Fork this repository.
 2. Setup your development environment as discussed in here: https://extendscript.docsforadobe.dev/index.html
 3. Set up Visual Studio as needed for updates on WPF application.
@@ -97,3 +99,19 @@ Please refer to the LICENSE file for more details.
 • Adobe, Photoshop, ExtendScript, Visual Studio Code are copyrights and/or trademarks of their respective owners.
 
 • Image Credits: [Andrea Piacquadio from Pexels](https://www.pexels.com/photo/photo-of-woman-looking-at-the-mirror-774866/)
+
+## Privacy and Data Collection
+
+Panel Splitter collects anonymized usage data by default to help us enhance the tool, but you can disable this anytime in the settings. Curious about what we collect and how we keep your privacy first? Check out our [Privacy Policy](https://github.com/Dilshan-H/Panel-Splitter/blob/main/PRIVACY.md) for more details.
+
+In summary:
+
+- No personal data collected (like emails etc.)
+- Data stored in PostHog servers in EU.
+- No sharing with third parties beyond PostHog.
+- We use only the PostHog API, no SDKs - so, no complex data capture or session recordings.
+- On PostHog `Discard client IP data` option is enabled and `process_person_profile` property is set to `false` in each request making them anonymous events.
+
+## Disclaimer
+
+Panel Splitter for Adobe Photoshop is provided "as is" without warranties of any kind, express or implied. While we strive to ensure the Application functions smoothly and securely, we are not responsible for any loss of data, system issues, or other damages arising from its use. The analytics data collected is anonymized and used solely to improve the Application, as outlined above. By using Panel Splitter, you acknowledge that you understand and accept these terms.
