@@ -6,7 +6,7 @@
 */
 
 // Script version
-var scriptVersion = "2.1";
+var scriptVersion = "2.2";
 var test_user = "true";
 
 // Save the current preferences

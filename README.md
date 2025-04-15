@@ -80,6 +80,8 @@ There is an alternative option that already available in Adobe Photoshop named `
 
 ## 🤝 Contributing to Panel Splitter
 
+<a href="https://www.buymeacoffee.com/dilshanh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
 Love what Panel Splitter can do? Help us make it even better! Whether you’ve found a bug, have a feature idea, or want to tweak the code, we’re excited to collaborate.
 Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/new) or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
