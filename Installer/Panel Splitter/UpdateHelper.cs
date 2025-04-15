@@ -8,7 +8,7 @@ namespace Panel_Splitter
     /// </summary>
     public static class UpdateHelper
     {
-        public const string CurrentVersion = "2.1";
+        public const string CurrentVersion = "2.2";
 
         /// <summary>
         /// Checks for available updates for the application asynchronously.

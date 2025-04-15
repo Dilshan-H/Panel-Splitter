@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Win32;
+using Microsoft.Win32.TaskScheduler;
 
 namespace Panel_Splitter
 {
@@ -21,7 +22,7 @@ namespace Panel_Splitter
             AnalyticsCheckBox.IsChecked = Properties.Settings.Default.AnalyticsEnabled;
 
             // Send logs as a fallback if analytics is enabled
-            Task.Run(async () =>
+            System.Threading.Tasks.Task.Run(async () =>
             {
                 await AnalyticsHelper.SendLogsAsync();
                 await AnalyticsHelper.CaptureEvent("App-Startup");
@@ -43,7 +44,7 @@ namespace Panel_Splitter
         private void InstallBtn_Click(object sender, RoutedEventArgs e)
         {
             List<string> paths = DetectPhotoshopVersions();
-            List<string> installedVersions = new();
+            List<string> installedVersions = [];
 
             foreach (string path in paths)
             {
@@ -191,6 +192,34 @@ namespace Panel_Splitter
         {
             Properties.Settings.Default.AutoUpdates = true;
             Properties.Settings.Default.Save();
+
+            try
+            {
+                // Create a new task definition for the local machine and assign properties
+                TaskDefinition td = TaskService.Instance.NewTask();
+                td.RegistrationInfo.Description = "Runs the Panel Splitter update check";
+
+                DailyTrigger dt = new()
+                {
+                    StartBoundary = DateTime.Today.AddDays(1).AddHours(9).AddMinutes(0),
+                    DaysInterval = 1
+                };
+                td.Triggers.Add(dt);
+
+                string exePath = Environment.ProcessPath;
+                td.Actions.Add(new ExecAction(exePath, "/background", null));
+
+                TaskService.Instance.RootFolder.RegisterTaskDefinition("Panel Splitter", td);
+            }
+            catch (Exception ex)
+            {
+                _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                {
+                    { "app_error_type", "App-Task-Creation-Failure" },
+                    { "app_exe_path", string.IsNullOrEmpty(Environment.ProcessPath) ? "Undefined" : Environment.ProcessPath},
+                    { "app_error_msg", ex.Message }
+                });
+            }
         }
 
         /// <summary>
@@ -244,6 +273,29 @@ namespace Panel_Splitter
                 _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
                 {
                     { "app_error_type", "App-Process-Start-Failure" },
+                    { "app_process_type", "GH-Link" },
+                    { "app_error_msg", ex.Message }
+                });
+            }
+        }
+
+        private void HelpBtn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://www.buymeacoffee.com/dilshanh",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show($"Failed to open BMC: {ex.Message}", "Error | Panel Splitter", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = AnalyticsHelper.CaptureEvent("App-Error", new Dictionary<string, object>
+                {
+                    { "app_error_type", "App-Process-Start-Failure" },
+                    { "app_process_type", "BMC-Link" },
                     { "app_error_msg", ex.Message }
                 });
             }
@@ -259,7 +311,7 @@ namespace Panel_Splitter
         /// <returns>A list of paths to Photoshop installations.</returns>
         private List<string> DetectPhotoshopVersions()
         {
-            List<string> paths = new();
+            List<string> paths = [];
             string baseKey = @"SOFTWARE\Adobe\Photoshop";
 
             // Scan Registry Keys
@@ -357,7 +409,7 @@ namespace Panel_Splitter
         /// </summary>
         private void UpdateInstalledVersionsDisplay()
         {
-            List<string> installedVersions = new();
+            List<string> installedVersions = [];
             List<string> paths = DetectPhotoshopVersions();
 
             foreach (string path in paths)
@@ -370,7 +422,7 @@ namespace Panel_Splitter
                 }
             }
 
-            InstalledVersionsTextBlock.Text = installedVersions.Any()
+            InstalledVersionsTextBlock.Text = installedVersions.Count != 0
                 ? "🗹 Installed in: " + string.Join(", ", installedVersions)
                 : "No installations found.";
         }
@@ -382,7 +434,7 @@ namespace Panel_Splitter
         /// <returns>True if admin privileges are required; otherwise, false.</returns>
         private static bool IsAdminRequired(string targetFolder)
         {
-            string[] protectedPaths = new string[] { @"C:\Program Files", @"C:\Program Files (x86)", @"C:\Windows" };
+            string[] protectedPaths = [@"C:\Program Files", @"C:\Program Files (x86)", @"C:\Windows"];
             return protectedPaths.Any(path => targetFolder.StartsWith(path, StringComparison.OrdinalIgnoreCase));
         }
 

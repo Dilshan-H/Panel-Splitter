@@ -215,7 +215,7 @@ namespace Panel_Splitter
                 ),
                 @event = eventType,
                 distinct_id = distinctId,
-                properties = MergeProperties(properties ?? new Dictionary<string, object>()),
+                properties = MergeProperties(properties ?? []),
 
                 // If event type is 'Script-Usage', use the received timestamp; otherwise use time now
                 timestamp = eventType == "Script-Usage" && properties != null && properties.TryGetValue("log_timestamp", out object? value)
@@ -314,17 +314,15 @@ namespace Panel_Splitter
         {
             try
             {
-                using (var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController"))
+                using var searcher = new ManagementObjectSearcher("SELECT Name FROM Win32_VideoController");
+                foreach (var obj in searcher.Get())
                 {
-                    foreach (var obj in searcher.Get())
-                    {
-                        return obj["Name"]?.ToString() ?? "Unknown";
-                    }
+                    return obj["Name"]?.ToString() ?? "Unknown";
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // No logging here to avoid recursive analytics calls
+                File.AppendAllText(ErrorLogPath, $"{DateTime.UtcNow}: Failed to get GPU name: {ex.Message}\n");
             }
             return "Unknown";
         }
