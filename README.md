@@ -7,7 +7,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Dilshan-H/Panel-Splitter?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Dilshan-H/Panel-Splitter?style=for-the-badge)
 
-![Panel Splitter for Photoshop - Cover](https://github.com/user-attachments/assets/67d6ccf8-491c-4e40-b10a-5070292ed3ad)
+![Panel Splitter for Photoshop - Cover](https://github.com/user-attachments/assets/d79d451d-48d9-4436-b270-6632b52358a5)
 
 ## Transform Your Photoshop Workflow with Panel Splitter
 
@@ -30,7 +30,9 @@ Here's a example of what this tool can do:
 
 ![Demo](https://github.com/Dilshan-H/Panel-Splitter/assets/77499497/8ccfeb01-8aef-4052-ad3a-6994a36b5142)
 
-## 🖼️ Screenshots
+## 🖼️ Inside Panel Splitter
+
+<img width="1360" height="800" alt="Panel Splitter in action" src="https://github.com/user-attachments/assets/16d037a2-0447-4aab-98e2-42bb4aa97956" />
 
 ## 📥 Download & Installation
 
