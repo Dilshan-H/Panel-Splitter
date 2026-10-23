@@ -1,0 +1,25 @@
+{
+  "cSpell.words": [
+    "Btns",
+    "Dilshan",
+    "dilshan",
+    "DONOTSAVECHANGES",
+    "dilshanh",
+    "dont",
+    "panelsplitter",
+    "edittext",
+    "ICYMI",
+    "Pexels",
+    "Photoshop",
+    "Piacquadio",
+    "statictext"
+  ],
+  "editor.formatOnSave": true,
+  "prettier.documentSelectors": [
+    "**/*.html",
+    "**/*.json",
+    "**/*.css",
+    "**/*.js"
+  ],
+  "cSpell.language": "en"
+}
