@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="content">
+      <div class="section">
+        <div class="section-head">
+          <div class="ico" style="fill: currentColor">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+              <path
+                d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"
+              />
+            </svg>
+          </div>
+          <span class="title">Split by</span>
+        </div>
+        <sp-radio-group id="mode" column>
+          <sp-radio value="guides" checked>Current guides</sp-radio>
+          <sp-radio value="grid">Rows and columns</sp-radio>
+        </sp-radio-group>
+
+        <div id="guidesBox" class="box">
+          <div class="row">
+            <div id="guideSummary" class="muted grow"></div>
+            <sp-action-button
+              id="refreshBtn"
+              title="Refresh guide count"
+              style="
+                padding: 0;
+                max-width: 28px;
+                max-height: 28px;
+                cursor: pointer;
+              "
+              ><div slot="icon" class="ico" style="fill: currentColor">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                  <path
+                    d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
+                  />
+                </svg></div
+            ></sp-action-button>
+          </div>
+        </div>
+
+        <div id="gridBox" class="box">
+          <div class="row">
+            <sp-field-label>Rows</sp-field-label>
+            <sp-textfield id="rows" class="field" value="2"></sp-textfield>
+            <sp-field-label>Columns</sp-field-label>
+            <sp-textfield id="cols" class="field" value="2"></sp-textfield>
+          </div>
+          <div id="gridSummary" class="muted"></div>
+          <sp-button
+            id="placeBtn"
+            size="s"
+            variant="secondary"
+            style="cursor: pointer"
+            ><div slot="icon" class="ico" style="fill: currentColor">
+              <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                <path
+                  d="M3 3v8h8V3H3zm6 6H5V5h4v4zm-6 4v8h8v-8H3zm6 6H5v-4h4v4zm4-16v8h8V3h-8zm6 6h-4V5h4v4zm-6 4v8h8v-8h-8zm6 6h-4v-4h4v4z"
+                />
+              </svg>
+            </div>
+            Place guides</sp-button
+          >
+        </div>
+      </div>
+
+      <sp-divider size="small"></sp-divider>
+
+      <div class="section" style="margin-top: 12px">
+        <div class="section-head">
+          <div class="ico" style="fill: currentColor">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+              <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+            </svg>
+          </div>
+          <span class="title">Save as</span>
+        </div>
+        <sp-radio-group id="format">
+          <sp-radio value="pdf" checked>PDF</sp-radio>
+          <sp-radio value="jpg">JPEG</sp-radio>
+        </sp-radio-group>
+        <div id="qualityBox" class="box">
+          <sp-slider id="quality" min="1" max="12" value="10" show-value="true">
+            <sp-label slot="label">Quality</sp-label>
+          </sp-slider>
+        </div>
+      </div>
+
+      <sp-divider size="small"></sp-divider>
+
+      <div class="section" style="margin-top: 12px">
+        <div class="section-head">
+          <div class="ico" style="fill: currentColor">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+              <path
+                d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
+              />
+            </svg>
+          </div>
+          <span class="title">Save to</span>
+        </div>
+        <sp-button
+          id="folderBtn"
+          size="s"
+          variant="secondary"
+          style="cursor: pointer; margin-top: 8px"
+          ><div slot="icon" class="ico" style="fill: currentColor">
+            <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+              <path
+                d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"
+              />
+            </svg>
+          </div>
+          Choose folder…</sp-button
+        >
+        <sp-help-text
+          id="folderPath"
+          size="m"
+          slot="help-text"
+          style="margin-bottom: 5px"
+        >
+          No folder chosen
+        </sp-help-text>
+
+        <sp-divider size="small"></sp-divider>
+
+        <div class="section" style="margin-top: 8px">
+          <div class="column" style="margin-top: 2px">
+            <sp-label>File name prefix:</sp-label>
+            <sp-textfield
+              id="prefix"
+              class="grow"
+              value="Panel_"
+            ></sp-textfield>
+          </div>
+        </div>
+      </div>
+
+      <sp-button
+        id="exportBtn"
+        variant="cta"
+        class="full"
+        style="cursor: pointer"
+        ><div slot="icon" class="ico" style="fill: currentColor">
+          <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+          </svg>
+        </div>
+        Export Panels</sp-button
+      >
+      <div id="status"></div>
+    </div>
+
+    <div class="footer">
+      <div class="support">
+        <div class="made">
+          Made with
+          <div class="heart" style="fill: #e0556b">
+            <svg viewBox="0 0 24 24" style="width: 14px; height: 14px">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              />
+            </svg>
+          </div>
+          by <span id="authorName" class="author"></span>
+        </div>
+        <div class="donate">
+          Panel Splitter is free & open source. If you find it useful, please
+          consider supporting.
+        </div>
+        <div class="btn-row">
+          <sp-button
+            id="coffeeBtn"
+            size="s"
+            variant="primary"
+            style="cursor: pointer"
+            ><div slot="icon" class="ico" style="fill: currentColor">
+              <svg viewBox="0 0 24 24" style="width: 16px; height: 16px">
+                <path
+                  d="M20 3H4v10c0 2.21 1.79 4 4 4h6c2.21 0 4-1.79 4-4v-3h2c1.11 0 2-.89 2-2V5c0-1.11-.89-2-2-2zm0 5h-2V5h2v3zM4 19h16v2H4z"
+                />
+              </svg>
+            </div>
+            Buy me a coffee</sp-button
+          >
+          <sp-button
+            id="ghBtn"
+            size="s"
+            variant="primary"
+            style="cursor: pointer"
+            ><div slot="icon" class="ico" style="fill: currentColor">
+              <svg viewBox="0 0 16 16" style="width: 16px; height: 16px">
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+            </div>
+            GitHub</sp-button
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js"></script>
+  </body>
+</html>

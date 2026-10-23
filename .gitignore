@@ -1,5 +1,6 @@
 Media/
 SetupData/*
+legacy-version/SetupData/*
 Tests/*
 .env
 TODO

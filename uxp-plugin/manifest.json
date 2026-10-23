@@ -1,0 +1,70 @@
+{
+  "id": "ed576e29",
+  "name": "Panel Splitter",
+  "version": "1.0.1",
+  "main": "index.html",
+  "manifestVersion": 5,
+  "host": {
+    "app": "PS",
+    "minVersion": "24.0.0"
+  },
+  "entrypoints": [
+    {
+      "type": "panel",
+      "id": "panelSplitter",
+      "label": {
+        "default": "Panel Splitter"
+      },
+      "minimumSize": {
+        "width": 230,
+        "height": 320
+      },
+      "maximumSize": {
+        "width": 600,
+        "height": 1200
+      },
+      "preferredDockedSize": {
+        "width": 260,
+        "height": 440
+      },
+      "preferredFloatingSize": {
+        "width": 300,
+        "height": 480
+      },
+      "icons": [
+        {
+          "width": 23,
+          "height": 23,
+          "path": "icons/icon-light.png",
+          "scale": [1, 2],
+          "theme": ["darkest", "dark", "medium"],
+          "species": ["generic"]
+        },
+        {
+          "width": 23,
+          "height": 23,
+          "path": "icons/icon-dark.png",
+          "scale": [1, 2],
+          "theme": ["lightest", "light"],
+          "species": ["generic"]
+        }
+      ]
+    }
+  ],
+  "requiredPermissions": {
+    "localFileSystem": "request",
+    "launchProcess": {
+      "schemes": ["https"]
+    }
+  },
+  "icons": [
+    {
+      "width": 48,
+      "height": 48,
+      "path": "icons/plugin-icon.png",
+      "scale": [1, 2],
+      "theme": ["darkest", "dark", "medium", "lightest", "light", "all"],
+      "species": ["pluginList"]
+    }
+  ]
+}

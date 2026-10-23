@@ -1,78 +1,37 @@
-# Privacy Policy for Panel Splitter for Adobe Photoshop
+# Privacy Policy for Panel Splitter
 
-**Last Updated: April 14, 2025**
+**Last Updated: October 23, 2026**
 
-We prioritize your privacy and strive to be transparent about our data practices. This Privacy Policy explains how we collect, use, and protect data in **Panel Splitter for Adobe Photoshop** (the "Application"), particularly through our use of PostHog for analytics.
+We prioritize your privacy and strive to be transparent about our data practices. This Privacy Policy explains how we collect, use, and protect data in **Panel Splitter** (the "Application").
 
 ## 1. What Data Do We Collect?
 
-To improve Panel Splitter, we collect anonymized usage data by default via PostHog, a third-party analytics platform (which is partially open source and less invasive than mainstream analytics services). You can disable this at any time in the Application’s settings. The data includes:
+We do not collect any personal data. The Application does not gather names, email addresses, IP addresses, or any personally identifiable information (PII).
 
-- **Usage Data**:
+## 2. Third-Party Services
 
-  - **Events**: Actions like starting the script, splitting panels, checking updates, or encountering errors.
-  - **Script Parameters**: Details such as row/column counts, canvas size, or processing time.
-  - **Error Logs**: Error types and messages to help us resolve issues.
+The Application does not use any third-party analytics or tracking services.
 
-- **System Information**:
+If you downloaded the Application from Adobe Exchange, please note that Adobe may collect certain data as per their [Privacy Policy](https://www.adobe.com/privacy.html). We do not have access to this data and are not responsible for Adobe's data collection practices.
 
-  - Operating system version and architecture (e.g., Windows 11, x64).
-  - Application version and locale (e.g., en-US).
-  - Time zone and country code (based on system settings).
-  - Hardware details: total RAM, free and total disk space on the system drive, and graphics card model
+If you downloaded the Application from GitHub, we do not collect any data through this platform. GitHub may collect certain data as per their [Privacy Policy](https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement). We do not have access to this data and are not responsible for GitHub's data collection practices.
 
-- **Unique Identifier**:
-  - A randomly generated ID to track usage patterns anonymously, not linked to your identity.
+## 3. Permissions required by the Application
 
-**No Personal Data**: We do not collect names, email addresses, IP addresses, or any personally identifiable information (PII). All data is anonymized to protect your privacy.
+The Application requires the following permissions to function properly:
 
-## 2. How Do We Collect Data?
+- **File System Access (localFileSystem)**: The Application needs permission to read and write files on your system to save the split panels. This access is limited to the directories you choose for saving files.
 
-Analytics is enabled by default to help us enhance the Application. When active, Panel Splitter sends anonymized usage and system data to PostHog’s servers (hosted in the EU) during operations like running the script or checking for updates. You can disable analytics at any time in the settings, stopping all data collection immediately.
+- **Process Launching (launchProcess)**: The Application needs permission to launch external processes. This is required for opening external web pages (like the donation page) in your default web browser. The Application does not launch any other processes or access any other system resources. When you click on a link within the Application, Adobe Photoshop will prompt you to confirm that you want to open the link in your default web browser.
 
-## 3. Why Do We Collect Data?
+## 4. Data Security
 
-We use analytics to:
+We take data security seriously. Since we do not collect any personal data, there is no risk of personal data breaches. However, we ensure that any data processed by the Application (like split panels) is handled securely and only stored in the locations you specify.
 
-- Understand usage patterns to improve features and performance.
-- Detect and fix bugs through anonymized error reports.
-- Ensure compatibility across different systems and optimize update checks.
-- Analyze hardware capabilities to enhance script efficiency and Photoshop integration.
+## 5. Changes to This Privacy Policy
+We may revise this Privacy Policy to reflect changes in our practices or legal requirements. The latest version is always on our [GitHub repository](https://github.com/Dilshan-H/Panel-Splitter).
 
-This data helps us keep Panel Splitter free, reliable, and user-focused.
-
-## 4. How Do We Use PostHog?
-
-PostHog is our trusted analytics provider, enabling us to analyze usage data securely. PostHog:
-
-- Stores data in the EU, following strict privacy regulations.
-- Processes only anonymized data, with no access to personal details.
-- Provides insights to make Panel Splitter better for everyone.
-
-See PostHog’s [Privacy Policy](https://posthog.com/privacy) for more information.
-
-## 5. Your Choices
-
-- **Opt-Out of Analytics**: Analytics is enabled by default, but you can disable it at any time in the Application’s settings. Disabling stops all data collection after one last ping to the PostHog notifying opting out of data collection.
-- **No Personal Data**: Since we collect only anonymized data, there’s no personal information to delete or manage.
-
-## 6. Data Security
-
-We protect analytics data with:
-
-- Secure transmission to PostHog via encryption (HTTPS).
-- Access limited to aggregated, anonymized insights by the Panel Splitter team.
-- No sharing with third parties beyond PostHog for analytics.
-
-## 7. Third-Party Services
-
-PostHog is the only third-party service used for analytics. If we add other services later, we’ll update this policy and notify you.
-
-## 8. Updates to This Policy
-
-We may revise this Privacy Policy to reflect changes in our practices or legal requirements. The latest version is always on our [GitHub repository](https://github.com/Dilshan-H/Panel-Splitter). Significant changes will be announced via in-app notifications or release notes.
-
-## 9. Contact Us
+## 6. Contact Us
 
 Questions about this policy or our data practices? Open an issue on our [GitHub repository](https://github.com/Dilshan-H/Panel-Splitter/issues).
 
