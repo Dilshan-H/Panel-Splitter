@@ -7,7 +7,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Dilshan-H/Panel-Splitter?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Dilshan-H/Panel-Splitter?style=for-the-badge)
 
-![Panel Splitter for Photoshop - Cover](https://github.com/user-attachments/assets/d79d451d-48d9-4436-b270-6632b52358a5)
+![Panel Splitter for Adobe Photoshop - Cover](https://github.com/user-attachments/assets/922b3745-f7d2-4cb8-8139-9ce7fe8c3a56)
 
 ## Transform Your Photoshop Workflow with Panel Splitter
 
@@ -17,7 +17,7 @@ Say goodbye to manual image splitting in Photoshop! Panel Splitter is designed t
 
 Earlier version of Panel Splitter was an ExtendScript based script that required manual installation and lacked a user-friendly interface. The new version is a modern UXP plugin that Adobe ecosystem supports, providing a seamless experience with a native interface.
 
-- Native PS panel, all tools at one location
+- All tools at one panel
 - Quickly add guides to your canvas (rows x columns)
 - Supports exporting both PDF & JPEG formats
 - Uses pixels as the default unit instead of user's unit settings
@@ -38,9 +38,13 @@ Here's a example of what this tool can do:
 
 **Supported Photoshop Versions:** Photoshop 24.0 (2023) or later. Older versions have not been tested and may not work properly. In that case, you can try the legacy version of Panel Splitter available [here](https://github.com/Dilshan-H/Panel-Splitter/tree/main/legacy-version).
 
+
 ### Get the plugin from Adobe Exchange:
 
+> Plugin is under review
+<!--
 [![Adobe Exchange](https://img.shields.io/badge/Adobe%20Exchange-Install%20Now-orange?style=for-the-badge&logo=academia)](https://exchange.adobe.com/apps/cc/ed576e29/panel-splitter)
+-->
 
 ### Or from GitHub releases:
 
@@ -53,6 +57,9 @@ You can download the latest version of **Panel Splitter** from the [releases pag
 - If you don't have/use **Adobe Creative Cloud**:
 
   Install a file archiver like [7-Zip](https://www.7-zip.org/) -> Right click on the downloaded `.ccx` file -> Select `7-Zip` -> `Extract to <filename>.ccx` -> Copy the extracted directory to your Photoshop plugins directory (e.g., `C:\Program Files\Adobe\Adobe Photoshop <version>\Plug-ins\` on Windows or `/Applications/Adobe Photoshop <version>/Plug-ins/` on Mac) -> Restart Photoshop and you should see the **Panel Splitter** plugin in the `Plugins` menu.
+
+> [!NOTE]
+> Please note that if you download the plugin via GitHub, you may need to enable developer mode in Photoshop to use it. Follow [this guide](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation) to enable developer mode.
 
 ## 🤔 Why use Panel Splitter?
 
@@ -107,7 +114,7 @@ Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/
 
 - You are not allowed to use the Panel Splitter name, logo, or any other branding elements for your own projects. Please refrain from attempting to upload or distribute modified versions of Panel Splitter on Adobe Exchange or any other platform without prior permission from the author.
 
-- Adobe, UXP Developer Tool, Photoshop, ExtendScript, Visual Studio Code are copyrights and/or trademarks of their respective owners.
+- _Adobe, Adobe Exchange, Creative Cloud, Photoshop, UXP Developer Tool_ are either registered trademarks or trademarks of Adobe in the United States and/or other countries.
 
 ## Privacy and Data Collection
 
