@@ -7,7 +7,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Dilshan-H/Panel-Splitter?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Dilshan-H/Panel-Splitter?style=for-the-badge)
 
-![Panel Splitter for Adobe Photoshop - Cover](https://github.com/user-attachments/assets/922b3745-f7d2-4cb8-8139-9ce7fe8c3a56)
+![Panel Splitter for Adobe Photoshop - Cover](https://github.com/user-attachments/assets/ed9576a9-96b5-4e7c-b1cc-8dddbe8d6f32)
 
 ## Transform Your Photoshop Workflow with Panel Splitter
 
@@ -17,16 +17,16 @@ Say goodbye to manual image splitting in Photoshop! Panel Splitter is designed t
 
 Earlier version of Panel Splitter was an ExtendScript based script that required manual installation and lacked a user-friendly interface. The new version is a modern UXP plugin that Adobe ecosystem supports, providing a seamless experience with a native interface.
 
-- All tools at one panel
+- All tools in one panel
 - Quickly add guides to your canvas (rows x columns)
 - Supports exporting both PDF & JPEG formats
 - Uses pixels as the default unit instead of user's unit settings
 - Set custom quality for JPEG outputs (1-12 range)
 - Now you can set a custom file name prefix for the sliced panels
 
-## ⏩ Simple Demo
+## ⏩ Quick Demo
 
-Here's a example of what this tool can do:
+Here's an example of what this tool can do:
 
 ![Demo](https://github.com/Dilshan-H/Panel-Splitter/assets/77499497/8ccfeb01-8aef-4052-ad3a-6994a36b5142)
 
@@ -41,10 +41,9 @@ Here's a example of what this tool can do:
 
 ### Get the plugin from Adobe Exchange:
 
-> Plugin is under review
-<!--
+You can install **Panel Splitter** directly from [Adobe Exchange](https://exchange.adobe.com/apps/cc/ed576e29/panel-splitter) by clicking the button below:
+
 [![Adobe Exchange](https://img.shields.io/badge/Adobe%20Exchange-Install%20Now-orange?style=for-the-badge&logo=academia)](https://exchange.adobe.com/apps/cc/ed576e29/panel-splitter)
--->
 
 ### Or from GitHub releases:
 
@@ -59,11 +58,11 @@ You can download the latest version of **Panel Splitter** from the [releases pag
   Install a file archiver like [7-Zip](https://www.7-zip.org/) -> Right click on the downloaded `.ccx` file -> Select `7-Zip` -> `Extract to <filename>.ccx` -> Copy the extracted directory to your Photoshop plugins directory (e.g., `C:\Program Files\Adobe\Adobe Photoshop <version>\Plug-ins\` on Windows or `/Applications/Adobe Photoshop <version>/Plug-ins/` on Mac) -> Restart Photoshop and you should see the **Panel Splitter** plugin in the `Plugins` menu.
 
 > [!NOTE]
-> Please note that if you download the plugin via GitHub, you may need to enable developer mode in Photoshop to use it. Follow [this guide](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation) to enable developer mode.
+> Please note that if you download the plugin via GitHub, you may need to enable developer mode in Photoshop to use it. Follow [this guide](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation) to enable developer mode if required.
 
 ## 🤔 Why use Panel Splitter?
 
-Panel Splitter helps designers, artists, and anyone who needs to split images into multiple panels effortlessly. Whether you’re preparing presentation panels, multi‑page layouts, or tiled artwork, this tool automates the process and delivers high‑quality outputs that you can send directly to print or use digitally. It saves time, reduces errors, and enhances your workflow efficiency.
+**Panel Splitter** helps designers, artists, and anyone who needs to split images into multiple panels effortlessly. Whether you’re preparing presentation panels, multi‑page layouts, or tiled artwork, this tool automates the process and delivers high‑quality outputs that you can send directly to print or use digitally. It saves time, reduces errors, and enhances your workflow efficiency.
 
 There is an alternative option that already available in Adobe Photoshop named `Slices from Guides`. But, it lacks the ability to export each panel in high quality state. (the `Export` feature is deprecated in modern versions as well). This tool fills that gap.
 
@@ -89,11 +88,11 @@ There is an alternative option that already available in Adobe Photoshop named `
 
 ## 🤝 Contributing to Panel Splitter
 
-Panel Splitter is a Free and Open Source project. Please consider supporting its development with a small donation.
+**Panel Splitter** is a Free and Open Source project. Please consider supporting its development with a small donation.
 
 <a href="https://www.buymeacoffee.com/dilshanh" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
-Love what Panel Splitter can do? Help us make it even better! Whether you’ve found a bug, have a feature idea, or want to tweak the code, we’re excited to collaborate.
+Love what **Panel Splitter** can do? Help us make it even better! Whether you’ve found a bug, have a feature idea, or want to tweak the code, we’re excited to collaborate.
 Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/new) or submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
 **Development Setup**
@@ -112,14 +111,14 @@ Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/
 - **The MIT License**: This program is free software: you can redistribute it and/or modify it under the terms of the MIT License. Attribution is required by leaving the author name and license info intact.
   Please refer to the LICENSE file for more details.
 
-- You are not allowed to use the Panel Splitter name, logo, or any other branding elements for your own projects. Please refrain from attempting to upload or distribute modified versions of Panel Splitter on Adobe Exchange or any other platform without prior permission from the author.
+- You are not allowed to use the **Panel Splitter** name, logo, or any other branding elements for your own projects. Please refrain from attempting to upload or distribute modified versions of **Panel Splitter** on Adobe Exchange or any other platform without prior permission from the author.
 
-- _Adobe, Adobe Exchange, Creative Cloud, Photoshop, UXP Developer Tool_ are either registered trademarks or trademarks of Adobe in the United States and/or other countries.
+- _Adobe, Adobe Exchange, Creative Cloud, Photoshop, UXP Developer Tool_ are either registered trademarks or trademarks of Adobe in the United States and/or other countries. Panel Splitter is not affiliated with or endorsed by Adobe.
 
 ## Privacy and Data Collection
 
-Panel Splitter does not collect any personal data. No ads, no trackers, no data sharing with third parties. Curious about how we keep your privacy first? Check out our [Privacy Policy](https://github.com/Dilshan-H/Panel-Splitter/blob/main/PRIVACY.md) for more details.
+**Panel Splitter** does not collect any personal data. No ads, no trackers, no data sharing with third parties. Curious about how we keep your privacy first? Check out our [Privacy Policy](https://github.com/Dilshan-H/Panel-Splitter/blob/main/PRIVACY.md) for more details.
 
 ## Disclaimer
 
-Panel Splitter for Adobe Photoshop is provided "as is" without warranties of any kind, express or implied. While we strive to ensure the Application functions smoothly and securely, we are not responsible for any loss of data, system issues, or other damages arising from its use. By using Panel Splitter, you acknowledge that you understand and accept these terms.
+**Panel Splitter for Adobe Photoshop** is provided "as is" without warranties of any kind, express or implied. While we strive to ensure the Application functions smoothly and securely, we are not responsible for any loss of data, system issues, or other damages arising from its use. By using **Panel Splitter**, you acknowledge that you understand and accept these terms.
