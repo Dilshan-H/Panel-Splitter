@@ -1,7 +1,7 @@
 {
   "id": "ed576e29",
   "name": "Panel Splitter",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "index.html",
   "manifestVersion": 5,
   "host": {
@@ -16,20 +16,20 @@
         "default": "Panel Splitter"
       },
       "minimumSize": {
-        "width": 230,
-        "height": 320
+        "width": 280,
+        "height": 720
       },
       "maximumSize": {
-        "width": 600,
-        "height": 1200
+        "width": 400,
+        "height": 800
       },
       "preferredDockedSize": {
-        "width": 260,
-        "height": 440
+        "width": 280,
+        "height": 730
       },
       "preferredFloatingSize": {
-        "width": 300,
-        "height": 480
+        "width": 290,
+        "height": 730
       },
       "icons": [
         {
@@ -37,16 +37,14 @@
           "height": 23,
           "path": "icons/icon-light.png",
           "scale": [1, 2],
-          "theme": ["darkest", "dark", "medium"],
-          "species": ["generic"]
+          "theme": ["darkest", "dark"]
         },
         {
           "width": 23,
           "height": 23,
           "path": "icons/icon-dark.png",
           "scale": [1, 2],
-          "theme": ["lightest", "light"],
-          "species": ["generic"]
+          "theme": ["lightest", "light"]
         }
       ]
     }
@@ -59,12 +57,11 @@
   },
   "icons": [
     {
-      "width": 48,
-      "height": 48,
+      "width": 23,
+      "height": 23,
       "path": "icons/plugin-icon.png",
       "scale": [1, 2],
-      "theme": ["darkest", "dark", "medium", "lightest", "light", "all"],
-      "species": ["pluginList"]
+      "theme": ["darkest", "dark", "light", "lightest", "all"]
     }
   ]
 }
