@@ -7,7 +7,7 @@
 ![GitHub stars](https://img.shields.io/github/stars/Dilshan-H/Panel-Splitter?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Dilshan-H/Panel-Splitter?style=for-the-badge)
 
-![Panel Splitter for Adobe Photoshop - Cover](https://github.com/user-attachments/assets/922b3745-f7d2-4cb8-8139-9ce7fe8c3a56)
+![Panel Splitter for Adobe Photoshop - Cover](https://github.com/user-attachments/assets/ed9576a9-96b5-4e7c-b1cc-8dddbe8d6f32)
 
 ## Transform Your Photoshop Workflow with Panel Splitter
 
@@ -41,10 +41,9 @@ Here's a example of what this tool can do:
 
 ### Get the plugin from Adobe Exchange:
 
-> Plugin is under review
-<!--
+You can install **Panel Splitter** directly from [Adobe Exchange](https://exchange.adobe.com/apps/cc/ed576e29/panel-splitter) by clicking the button below:
+
 [![Adobe Exchange](https://img.shields.io/badge/Adobe%20Exchange-Install%20Now-orange?style=for-the-badge&logo=academia)](https://exchange.adobe.com/apps/cc/ed576e29/panel-splitter)
--->
 
 ### Or from GitHub releases:
 
@@ -59,7 +58,7 @@ You can download the latest version of **Panel Splitter** from the [releases pag
   Install a file archiver like [7-Zip](https://www.7-zip.org/) -> Right click on the downloaded `.ccx` file -> Select `7-Zip` -> `Extract to <filename>.ccx` -> Copy the extracted directory to your Photoshop plugins directory (e.g., `C:\Program Files\Adobe\Adobe Photoshop <version>\Plug-ins\` on Windows or `/Applications/Adobe Photoshop <version>/Plug-ins/` on Mac) -> Restart Photoshop and you should see the **Panel Splitter** plugin in the `Plugins` menu.
 
 > [!NOTE]
-> Please note that if you download the plugin via GitHub, you may need to enable developer mode in Photoshop to use it. Follow [this guide](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation) to enable developer mode.
+> Please note that if you download the plugin via GitHub, you may need to enable developer mode in Photoshop to use it. Follow [this guide](https://developer.adobe.com/photoshop/uxp/2022/guides/devtool/installation) to enable developer mode if required.
 
 ## 🤔 Why use Panel Splitter?
 
@@ -114,7 +113,7 @@ Feel free to [open an issue](https://github.com/dilshan-h/Panel-Splitter/issues/
 
 - You are not allowed to use the Panel Splitter name, logo, or any other branding elements for your own projects. Please refrain from attempting to upload or distribute modified versions of Panel Splitter on Adobe Exchange or any other platform without prior permission from the author.
 
-- _Adobe, Adobe Exchange, Creative Cloud, Photoshop, UXP Developer Tool_ are either registered trademarks or trademarks of Adobe in the United States and/or other countries.
+- _Adobe, Adobe Exchange, Creative Cloud, Photoshop, UXP Developer Tool_ are either registered trademarks or trademarks of Adobe in the United States and/or other countries. Panel Splitter is not affiliated with or endorsed by Adobe.
 
 ## Privacy and Data Collection
 
